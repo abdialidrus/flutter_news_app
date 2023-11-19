@@ -6,6 +6,16 @@ abstract class NewsRepository {
   const NewsRepository();
 
   FutureResultData<List<Category>> getNewsCategories();
-  FutureResultData<List<Article>> getHeadlineNews();
-  FutureResultData<List<Article>> getTrendingNews();
+
+  FutureResultData<List<Article>> getHeadlineNews({
+    required String categoryType,
+    required int page,
+    required String countryCode,
+  });
+
+  FutureResultData<List<Article>> getTrendingNews({
+    required String categoryType,
+    required int page,
+    required String countryCode,
+  });
 }
