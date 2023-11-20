@@ -4,10 +4,12 @@ import 'package:flutter_news_app/src/news/presentation/widgets/news_list_item.da
 
 class TrendingNewsList extends StatelessWidget {
   final List<Article> articles;
+  final Function(String url) onNewsSelected;
 
   const TrendingNewsList({
     super.key,
     required this.articles,
+    required this.onNewsSelected,
   });
 
   @override
@@ -18,11 +20,15 @@ class TrendingNewsList extends StatelessWidget {
       itemCount: articles.length,
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
+        final article = articles[index];
         return NewsListItem(
-          imgUrl: articles[index].urlToImage,
-          title: articles[index].title,
-          desc: articles[index].description,
-          url: articles[index].url,
+          imgUrl: article.urlToImage,
+          title: article.title,
+          desc: article.description,
+          url: article.url,
+          onNewsSelected: () {
+            onNewsSelected(article.url);
+          },
         );
       },
     );

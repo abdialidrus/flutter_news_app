@@ -7,8 +7,13 @@ import 'package:flutter_news_app/src/news/presentation/widgets/trending_news_lis
 
 class SectionNewsTrending extends StatefulWidget {
   final Category selectedCategory;
+  final Function(String url) onNewsSelected;
 
-  const SectionNewsTrending({super.key, required this.selectedCategory});
+  const SectionNewsTrending({
+    super.key,
+    required this.selectedCategory,
+    required this.onNewsSelected,
+  });
 
   @override
   State<SectionNewsTrending> createState() => _SectionNewsTrendingState();
@@ -34,7 +39,12 @@ class _SectionNewsTrendingState extends State<SectionNewsTrending> {
                               title: 'Trending news',
                               onViewAllPressed: () {},
                             ),
-                            TrendingNewsList(articles: state.articles)
+                            TrendingNewsList(
+                              articles: state.articles,
+                              onNewsSelected: (url) {
+                                widget.onNewsSelected(url);
+                              },
+                            )
                           ],
                         )
                       : const SizedBox.shrink();

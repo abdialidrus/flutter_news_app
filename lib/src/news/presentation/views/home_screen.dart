@@ -1,14 +1,14 @@
-import 'package:circle_flags/circle_flags.dart';
-import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_news_app/src/news/domain/entities/category.dart';
 import 'package:flutter_news_app/src/news/presentation/bloc/headline_news_bloc.dart';
 import 'package:flutter_news_app/src/news/presentation/bloc/news_categories_bloc.dart';
 import 'package:flutter_news_app/src/news/presentation/bloc/trending_news_bloc.dart';
+import 'package:flutter_news_app/src/news/presentation/views/article_detail_screen.dart';
 import 'package:flutter_news_app/src/news/presentation/views/section_news_categories.dart';
 import 'package:flutter_news_app/src/news/presentation/views/section_news_headline.dart';
 import 'package:flutter_news_app/src/news/presentation/views/section_news_trending.dart';
+import 'package:flutter_news_app/src/news/presentation/widgets/main_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
   );
   int page = 1;
   String _countryCode = 'us';
-  String _countryName = 'United States';
 
   void loadNewsDataFirstTime() {
     context.read<NewsCategoriesBloc>().add(const GetNewsCategoriesEvent());
@@ -98,6 +97,17 @@ class _HomeScreenState extends State<HomeScreen> {
     getAllNewsData();
   }
 
+  void onNewsSelected(String url) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ArticleDetailScreen(
+          newsUrl: url,
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -107,57 +117,23 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                const Text('Flutter'),
-                Text(
-                  'News',
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            GestureDetector(
-              child: Row(
-                children: [
-                  CircleFlag(
-                    _countryCode,
-                    size: 24,
-                  ),
-                  const Icon(
-                    Icons.arrow_drop_down,
-                    size: 18,
-                  ),
-                ],
-              ),
-              onTap: () {
-                showCountryPicker(
-                  context: context,
-                  showPhoneCode: false,
-                  onSelect: (Country country) {
-                    updateCountry(country.countryCode);
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-        centerTitle: true,
-        elevation: 0.0,
+      appBar: MainAppBar(
+        onCountrySelected: (code) {
+          updateCountry(code);
+        },
+        countryCode: _countryCode,
+        showCountrySelector: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             const SizedBox(height: 15),
-            const SectionNewsHeadline(),
+            SectionNewsHeadline(
+              onNewsSelected: (String url) {
+                onNewsSelected(url);
+              },
+            ),
             const SizedBox(height: 30),
             SectionNewsCategories(
               onCategorySelected: (category) {
@@ -165,7 +141,12 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             const SizedBox(height: 20),
-            SectionNewsTrending(selectedCategory: selectedCategory),
+            SectionNewsTrending(
+              selectedCategory: selectedCategory,
+              onNewsSelected: (String url) {
+                onNewsSelected(url);
+              },
+            ),
           ],
         ),
       ),

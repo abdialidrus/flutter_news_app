@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_news_app/src/news/presentation/bloc/headline_news_bloc.dart';
-import 'package:flutter_news_app/src/news/presentation/widgets/section_header.dart';
 import 'package:flutter_news_app/src/news/presentation/widgets/headline_news_carousel.dart';
+import 'package:flutter_news_app/src/news/presentation/widgets/section_header.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 class SectionNewsHeadline extends StatefulWidget {
-  const SectionNewsHeadline({super.key});
+  final Function(String url) onNewsSelected;
+  const SectionNewsHeadline({super.key, required this.onNewsSelected});
 
   @override
   State<SectionNewsHeadline> createState() => _SectionNewsHeadlineState();
@@ -40,7 +41,12 @@ class _SectionNewsHeadlineState extends State<SectionNewsHeadline> {
                                     context: context);
                               },
                             ),
-                            HeadlineNewsCarousel(articles: state.articles),
+                            HeadlineNewsCarousel(
+                              articles: state.articles,
+                              onNewsSelected: (url) {
+                                widget.onNewsSelected(url);
+                              },
+                            ),
                           ],
                         )
                       : const SizedBox.shrink();
