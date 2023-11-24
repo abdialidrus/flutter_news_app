@@ -26,7 +26,6 @@ class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
     emit(const LoadingHeadlineNews());
 
     final result = await _getHeadlineNews(GetHeadlineNewsParams(
-      categoryType: event.categoryType,
       page: event.page,
       countryCode: event.countryCode,
     ));

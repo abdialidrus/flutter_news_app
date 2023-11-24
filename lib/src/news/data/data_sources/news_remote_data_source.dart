@@ -5,7 +5,6 @@ abstract class NewsRemoteDataSource {
   Future<List<CategoryModel>> getNewsCategories();
 
   Future<List<ArticleModel>> getHeadlineNews({
-    required String categoryType,
     required int page,
     required String countryCode,
   });

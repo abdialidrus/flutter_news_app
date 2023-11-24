@@ -27,6 +27,8 @@ dependencies:
   circle_flags: ^3.0.1
   webview_flutter: ^4.4.2
   share_plus: ^7.2.1
+  iconsax: ^0.0.8
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:

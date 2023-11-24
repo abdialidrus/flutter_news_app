@@ -2,6 +2,9 @@ import 'package:circle_flags/circle_flags.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:get/route_manager.dart';
+import 'package:get/utils.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:share_plus/share_plus.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -23,49 +26,49 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
             children: [
-              const Text('Flutter'),
+              const Text('WorldIn'),
               Text(
-                'News',
+                'News'.tr,
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.bold),
               ),
             ],
           ),
-          if (showCountrySelector)
-            GestureDetector(
+        ],
+      ),
+      centerTitle: false,
+      elevation: 0.0,
+      leading: showCountrySelector ? const Icon(Iconsax.search_normal_1) : null,
+      actions: [
+        if (showCountrySelector)
+          GestureDetector(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
               child: Row(
                 children: [
                   CircleFlag(
                     countryCode!,
                     size: 24,
                   ),
-                  const Icon(
-                    Icons.arrow_drop_down,
-                    size: 18,
-                  ),
                 ],
               ),
-              onTap: () {
-                showCountryPicker(
-                  context: context,
-                  showPhoneCode: false,
-                  onSelect: (Country country) {
-                    onCountrySelected!(country.countryCode);
-                  },
-                );
-              },
             ),
-        ],
-      ),
-      centerTitle: false,
-      elevation: 0.0,
-      actions: [
+            onTap: () {
+              showCountryPicker(
+                context: context,
+                showPhoneCode: false,
+                onSelect: (Country country) {
+                  onCountrySelected!(country.countryCode);
+                },
+              );
+            },
+          ),
         if (!showCountrySelector)
           GestureDetector(
             onTap: () async {

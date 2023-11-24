@@ -38,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
         );
     context.read<HeadlineNewsBloc>().add(
           GetHeadlineNewsEvent(
-            categoryType: selectedCategory.key,
             page: 1,
             countryCode: _countryCode,
           ),
@@ -56,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
         );
     context.read<HeadlineNewsBloc>().add(
           GetHeadlineNewsEvent(
-            categoryType: selectedCategory.key,
             page: page,
             countryCode: _countryCode,
           ),

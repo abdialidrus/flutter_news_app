@@ -14,7 +14,6 @@ class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
 
   @override
   Future<List<ArticleModel>> getHeadlineNews({
-    required String categoryType,
     required int page,
     required String countryCode,
   }) async {

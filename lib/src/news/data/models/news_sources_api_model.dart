@@ -16,11 +16,18 @@ class NewsSourcesApiModel {
 }
 
 class NewsSource {
-  final String id;
+  final String? id;
+  final String? name;
 
-  NewsSource({required this.id});
+  NewsSource({required this.id, required this.name});
+
+  NewsSource.empty()
+      : this(
+          id: '_empty.id',
+          name: '_empty.name',
+        );
 
   factory NewsSource.fromJson(DataMap json) {
-    return NewsSource(id: json['id']);
+    return NewsSource(id: json['id'], name: json['name']);
   }
 }

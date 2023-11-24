@@ -29,6 +29,14 @@ class SectionNewsCategories extends StatelessWidget {
                         return GestureDetector(
                           onTap: () {
                             onCategorySelected(state.categories[index]);
+
+                            for (var category in state.categories) {
+                              if (category.key == state.categories[index].key) {
+                                category.isSelected = true;
+                              } else {
+                                category.isSelected = false;
+                              }
+                            }
                           },
                           child: Container(
                             margin: const EdgeInsets.only(
@@ -38,21 +46,26 @@ class SectionNewsCategories extends StatelessWidget {
                             child: Stack(
                               children: [
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(6),
+                                  borderRadius: BorderRadius.circular(50),
                                   child: Image.asset(
                                     state.categories[index].imagePath,
                                     width: 120,
-                                    height: 70,
+                                    height: 50,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                                Container(
-                                  width: 120,
-                                  height: 70,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    color: Colors.black38,
+                                if (!state.categories[index].isSelected)
+                                  Container(
+                                    width: 120,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Colors.black54,
+                                    ),
                                   ),
+                                SizedBox(
+                                  width: 120,
+                                  height: 50,
                                   child: Center(
                                     child: Text(
                                       state.categories[index].name,

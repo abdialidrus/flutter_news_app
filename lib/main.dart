@@ -4,7 +4,7 @@ import 'package:flutter_news_app/core/services/injection_container.dart';
 import 'package:flutter_news_app/src/news/presentation/bloc/headline_news_bloc.dart';
 import 'package:flutter_news_app/src/news/presentation/bloc/news_categories_bloc.dart';
 import 'package:flutter_news_app/src/news/presentation/bloc/trending_news_bloc.dart';
-import 'package:flutter_news_app/src/news/presentation/views/home_screen.dart';
+import 'package:flutter_news_app/src/news/presentation/views/main_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const HomeScreen(),
+        home: const MainScreen(),
       ),
     );
   }

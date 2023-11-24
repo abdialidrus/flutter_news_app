@@ -6,6 +6,7 @@ class Article extends Equatable {
   final String url;
   final String urlToImage;
   final String description;
+  final String publishedAt;
 
   const Article({
     required this.title,
@@ -13,8 +14,16 @@ class Article extends Equatable {
     required this.url,
     required this.urlToImage,
     required this.description,
+    required this.publishedAt,
   });
 
   @override
-  List<Object?> get props => [title, source, url, urlToImage, description];
+  List<Object?> get props => [
+        title,
+        source,
+        url,
+        urlToImage,
+        description,
+        publishedAt,
+      ];
 }

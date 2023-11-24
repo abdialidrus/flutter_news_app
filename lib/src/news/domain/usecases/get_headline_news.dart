@@ -13,23 +13,20 @@ class GetHeadlineNews
   @override
   FutureResultData<List<Article>> call(GetHeadlineNewsParams params) async =>
       _repository.getHeadlineNews(
-        categoryType: params.categoryType,
         page: params.page,
         countryCode: params.countryCode,
       );
 }
 
 class GetHeadlineNewsParams extends Equatable {
-  final String categoryType;
   final int page;
   final String countryCode;
 
   const GetHeadlineNewsParams({
-    required this.categoryType,
     required this.page,
     required this.countryCode,
   });
 
   @override
-  List<Object?> get props => [categoryType, page];
+  List<Object?> get props => [countryCode, page];
 }

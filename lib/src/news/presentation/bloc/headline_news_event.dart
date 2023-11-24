@@ -8,12 +8,10 @@ abstract class HeadlineNewsEvent extends Equatable {
 }
 
 class GetHeadlineNewsEvent extends HeadlineNewsEvent {
-  final String categoryType;
   final int page;
   final String countryCode;
 
   const GetHeadlineNewsEvent({
-    required this.categoryType,
     required this.page,
     required this.countryCode,
   });

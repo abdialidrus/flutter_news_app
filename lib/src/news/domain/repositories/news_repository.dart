@@ -8,7 +8,6 @@ abstract class NewsRepository {
   FutureResultData<List<Category>> getNewsCategories();
 
   FutureResultData<List<Article>> getHeadlineNews({
-    required String categoryType,
     required int page,
     required String countryCode,
   });
