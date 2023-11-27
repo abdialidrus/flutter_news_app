@@ -4,7 +4,7 @@ import 'package:flutter_news_app/src/news/data/data_sources/local/news_local_dat
 import 'package:flutter_news_app/src/news/data/data_sources/remote/news_remote_data_source.dart';
 import 'package:flutter_news_app/src/news/data/data_sources/remote/news_remote_data_source_impl.dart';
 import 'package:flutter_news_app/src/news/data/repositories/news_repository_impl.dart';
-import 'package:flutter_news_app/src/news/data/util/dio_config.dart';
+import 'package:flutter_news_app/src/news/data/data_sources/remote/dio_config.dart';
 import 'package:flutter_news_app/src/news/domain/repositories/news_repository.dart';
 import 'package:flutter_news_app/src/news/domain/usecases/check_is_article_saved.dart';
 import 'package:flutter_news_app/src/news/domain/usecases/get_headline_news.dart';
