@@ -7,16 +7,16 @@ class Article extends Equatable {
   final String urlToImage;
   final String description;
   final String publishedAt;
-  bool isSaved;
+  final String countryCode;
 
-  Article({
+  const Article({
     required this.title,
     required this.source,
     required this.url,
     required this.urlToImage,
     required this.description,
     required this.publishedAt,
-    required this.isSaved,
+    required this.countryCode,
   });
 
   @override
@@ -27,5 +27,6 @@ class Article extends Equatable {
         urlToImage,
         description,
         publishedAt,
+        countryCode,
       ];
 }

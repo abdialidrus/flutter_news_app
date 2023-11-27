@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_news_app/src/news/domain/entities/article.dart';
 import 'package:flutter_news_app/src/news/presentation/bloc/saved_articles_bloc.dart';
 import 'package:flutter_news_app/src/news/presentation/views/article_detail_screen.dart';
-import 'package:flutter_news_app/src/news/presentation/widgets/article_list_vertical.dart';
+import 'package:flutter_news_app/src/news/presentation/widgets/article_list_vertical_item.dart';
 import 'package:flutter_news_app/src/news/presentation/widgets/main_app_bar.dart';
 
 class SavedArticlesScreen extends StatefulWidget {
@@ -14,7 +14,6 @@ class SavedArticlesScreen extends StatefulWidget {
 }
 
 class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -60,10 +59,20 @@ class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
                       ? SingleChildScrollView(
                           child: Column(
                             children: [
-                              ArticleListVertical(
-                                articles: state.articles,
-                                onItemSelected: (article) {
-                                  onArticleSelected(article);
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const ClampingScrollPhysics(),
+                                itemCount: state.articles.length,
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (context, index) {
+                                  final article = state.articles[index];
+                                  return ArticleListVerticalItem(
+                                    article: article,
+                                    onItemSelected: (article) {
+                                      onArticleSelected(article);
+                                    },
+                                    isSavedList: true,
+                                  );
                                 },
                               ),
                             ],

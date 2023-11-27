@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_news_app/core/utils/typedef.dart';
-import 'package:flutter_news_app/src/news/data/models/article_model.dart';
+import 'package:flutter_news_app/src/news/data/models/article_entity.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -39,7 +39,8 @@ class ArticleDatabase {
         url TEXT PRIMARY KEY,
         url_to_image TEXT,
         description TEXT,
-        published_at TEXT)
+        published_at TEXT,
+        country_code TEXT)
     ''');
     if (kDebugMode) {
       print('Database was created!');
@@ -50,11 +51,11 @@ class ArticleDatabase {
     // Run migration according database versions
   }
 
-  Future<int> insertArticle(ArticleModel articleModel) async {
+  Future<int> insertArticle(ArticleEntity entity) async {
     var client = await db;
     return client!.insert(
       'articles',
-      articleModel.toMapForDb(),
+      entity.toMapForDb(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -68,7 +69,7 @@ class ArticleDatabase {
     );
   }
 
-  Future<ArticleModel?> fetchArticle(String articleUrl) async {
+  Future<ArticleEntity?> fetchArticle(String articleUrl) async {
     var client = await db;
     final Future<List<DataMap>> futureMaps = client!.query(
       'articles',
@@ -78,19 +79,19 @@ class ArticleDatabase {
     var maps = await futureMaps;
 
     if (maps.isNotEmpty) {
-      return ArticleModel.fromMapDb(maps.first);
+      return ArticleEntity.fromDb(maps.first);
     }
 
     return null;
   }
 
-  Future<List<ArticleModel>> fetchAllArticles() async {
+  Future<List<ArticleEntity>> fetchAllArticles() async {
     var client = await db;
     var res = await client!.query('articles');
 
     if (res.isNotEmpty) {
       var articles =
-          res.map((articleMap) => ArticleModel.fromMapDb(articleMap)).toList();
+          res.map((articleMap) => ArticleEntity.fromDb(articleMap)).toList();
       return articles;
     }
     return [];

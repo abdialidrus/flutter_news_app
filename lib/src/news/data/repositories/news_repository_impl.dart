@@ -4,7 +4,7 @@ import 'package:flutter_news_app/core/errors/failure.dart';
 import 'package:flutter_news_app/core/utils/typedef.dart';
 import 'package:flutter_news_app/src/news/data/data_sources/local/news_local_data_source.dart';
 import 'package:flutter_news_app/src/news/data/data_sources/remote/news_remote_data_source.dart';
-import 'package:flutter_news_app/src/news/data/models/article_model.dart';
+import 'package:flutter_news_app/src/news/data/models/article_entity.dart';
 import 'package:flutter_news_app/src/news/domain/entities/article.dart';
 import 'package:flutter_news_app/src/news/domain/repositories/news_repository.dart';
 
@@ -29,7 +29,7 @@ class NewsRepositoryImpl implements NewsRepository {
         pageSize: pageSize,
         countryCode: countryCode,
       );
-      return Right(articles);
+      return Right(articles.map((e) => e.toDomainEntity(countryCode)).toList());
     } on APIException catch (e) {
       return Left(APIFailure.fromException(e));
     }
@@ -39,7 +39,7 @@ class NewsRepositoryImpl implements NewsRepository {
   FutureResultData<List<Article>> getSavedArticles() async {
     try {
       final articles = await localDataSource.getSavedArticles();
-      return Right(articles);
+      return Right(articles.map((e) => e.toDomainEntity()).toList());
     } on CacheException catch (e) {
       return Left(CacheFailure.fromException(e));
     }
@@ -49,7 +49,7 @@ class NewsRepositoryImpl implements NewsRepository {
   FutureResultVoid saveArticle({required Article article}) async {
     try {
       await localDataSource.saveArticle(
-        articleModel: ArticleModel.fromEntity(article),
+        articleEntity: ArticleEntity.fromEntity(article),
       );
       return const Right(null);
     } on CacheException catch (e) {
@@ -61,7 +61,7 @@ class NewsRepositoryImpl implements NewsRepository {
   FutureResultData<bool> isArticleSaved({required Article article}) async {
     try {
       final isArticleSaved = await localDataSource.checkIsArticleSaved(
-        articleModel: ArticleModel.fromEntity(article),
+        articleEntity: ArticleEntity.fromEntity(article),
       );
       return Right(isArticleSaved);
     } on CacheException catch (e) {
@@ -73,7 +73,7 @@ class NewsRepositoryImpl implements NewsRepository {
   FutureResultVoid unSaveArticle({required Article article}) async {
     try {
       await localDataSource.removeArticle(
-        articleModel: ArticleModel.fromEntity(article),
+        articleEntity: ArticleEntity.fromEntity(article),
       );
       return const Right(null);
     } on CacheException catch (e) {

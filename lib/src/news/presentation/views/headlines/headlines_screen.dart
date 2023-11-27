@@ -150,6 +150,7 @@ class _HeadlinesScreenState extends State<HeadlinesScreen> {
                   onItemSelected: () {
                     onArticleSelected(articles[index]);
                   },
+                  isSavedList: false,
                 );
               } else {
                 Timer(const Duration(milliseconds: 30), () {

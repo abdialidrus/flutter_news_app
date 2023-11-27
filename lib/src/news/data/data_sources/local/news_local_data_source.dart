@@ -1,12 +1,12 @@
-import 'package:flutter_news_app/src/news/data/models/article_model.dart';
+import 'package:flutter_news_app/src/news/data/models/article_entity.dart';
 
 abstract class NewsLocalDataSource {
 
-  Future<List<ArticleModel>> getSavedArticles();
+  Future<List<ArticleEntity>> getSavedArticles();
 
-  Future<void> saveArticle({required ArticleModel articleModel});
+  Future<void> saveArticle({required ArticleEntity articleEntity});
 
-  Future<void> removeArticle({required ArticleModel articleModel});
+  Future<void> removeArticle({required ArticleEntity articleEntity});
 
-  Future<bool> checkIsArticleSaved({required ArticleModel articleModel});
+  Future<bool> checkIsArticleSaved({required ArticleEntity articleEntity});
 }

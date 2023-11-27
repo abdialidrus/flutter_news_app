@@ -3,27 +3,22 @@ import 'dart:convert';
 import 'package:flutter_news_app/core/utils/typedef.dart';
 import 'package:flutter_news_app/src/news/domain/entities/article.dart';
 
-class ArticleModel extends Article {
-  ArticleModel({
-    required super.title,
-    required super.source,
-    required super.url,
-    required super.urlToImage,
-    required super.description,
-    required super.publishedAt,
-    required super.isSaved,
-  });
+class ArticleModel {
+  final String title;
+  final String source;
+  final String url;
+  final String urlToImage;
+  final String description;
+  final String publishedAt;
 
-  ArticleModel.empty()
-      : this(
-          title: '_empty.title',
-          source: '_empty.source',
-          url: '_empty.url',
-          urlToImage: '_empty.urlToImage',
-          description: '_empty.description',
-          publishedAt: '_empty.publishedAt',
-          isSaved: false,
-        );
+  ArticleModel({
+    required this.title,
+    required this.source,
+    required this.url,
+    required this.urlToImage,
+    required this.description,
+    required this.publishedAt,
+  });
 
   ArticleModel.fromMap(DataMap map)
       : this(
@@ -37,33 +32,22 @@ class ArticleModel extends Article {
           description:
               map['description'] as String? ?? 'no description available',
           publishedAt: map['publishedAt'] as String,
-          isSaved: false,
-        );
-
-  ArticleModel.fromMapDb(DataMap map)
-      : this(
-          title: map['title'] as String,
-          source: map['source'] as String? ?? 'Source unknown',
-          url: map['url'] as String,
-          urlToImage: map['url_to_image'] as String? ?? '',
-          description:
-              map['description'] as String? ?? 'no description available',
-          publishedAt: map['published_at'] as String,
-          isSaved: true,
         );
 
   factory ArticleModel.fromJson(String source) =>
       ArticleModel.fromMap(jsonDecode(source) as DataMap);
 
-  ArticleModel.fromEntity(Article article) : this(
-        title: article.title,
-        source: article.source,
-        url: article.url,
-        urlToImage: article.urlToImage,
-        description: article.description,
-        publishedAt: article.publishedAt,
-        isSaved: article.isSaved,
-      );
+  Article toDomainEntity(String countryCode) {
+    return Article(
+      title: title,
+      source: source,
+      url: url,
+      urlToImage: urlToImage,
+      description: description,
+      publishedAt: publishedAt,
+      countryCode: countryCode,
+    );
+  }
 
   DataMap toMap() => {
         'title': title,
@@ -72,15 +56,6 @@ class ArticleModel extends Article {
         'urlToImage': urlToImage,
         'description': description,
         'publishedAt': publishedAt,
-      };
-
-  DataMap toMapForDb() => {
-        'title': title,
-        'source': source,
-        'url': url,
-        'url_to_image': urlToImage,
-        'description': description,
-        'published_at': publishedAt,
       };
 
   String toJson() => jsonEncode(toMap());
