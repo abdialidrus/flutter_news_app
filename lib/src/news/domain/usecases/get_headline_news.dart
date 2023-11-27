@@ -14,16 +14,19 @@ class GetHeadlineNews
   FutureResultData<List<Article>> call(GetHeadlineNewsParams params) async =>
       _repository.getHeadlineNews(
         page: params.page,
+        pageSize: params.pageSize,
         countryCode: params.countryCode,
       );
 }
 
 class GetHeadlineNewsParams extends Equatable {
   final int page;
+  final int pageSize;
   final String countryCode;
 
   const GetHeadlineNewsParams({
     required this.page,
+    required this.pageSize,
     required this.countryCode,
   });
 

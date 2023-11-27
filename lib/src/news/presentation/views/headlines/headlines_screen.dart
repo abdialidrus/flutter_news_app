@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_news_app/src/news/domain/entities/article.dart';
 import 'package:flutter_news_app/src/news/presentation/bloc/headline_news_bloc.dart';
 import 'package:flutter_news_app/src/news/presentation/bloc/saved_articles_bloc.dart';
 import 'package:flutter_news_app/src/news/presentation/views/article_detail_screen.dart';
-import 'package:flutter_news_app/src/news/presentation/widgets/article_list_vertical.dart';
+import 'package:flutter_news_app/src/news/presentation/widgets/article_list_vertical_item.dart';
 import 'package:flutter_news_app/src/news/presentation/widgets/main_app_bar.dart';
 
 class HeadlinesScreen extends StatefulWidget {
@@ -16,20 +18,32 @@ class HeadlinesScreen extends StatefulWidget {
 
 class _HeadlinesScreenState extends State<HeadlinesScreen> {
   String _countryCode = 'us';
+  final scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    getHeadlineNewsFirstPage();
+    setupScrollController();
+    getHeadlineNews(false);
   }
 
-  void getHeadlineNewsFirstPage() {
-    context.read<HeadlineNewsBloc>().add(
-          GetHeadlineNewsEvent(
-            page: 1,
-            countryCode: _countryCode,
-          ),
-        );
+  void setupScrollController() {
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge) {
+        if (scrollController.position.pixels != 0) {
+          getHeadlineNews(false);
+        }
+      }
+    });
+  }
+
+  void getHeadlineNews(bool loadFirstPage) {
+    BlocProvider.of<HeadlineNewsBloc>(context).add(
+      GetHeadlineNewsEvent(
+        page: loadFirstPage ? 1 : 0,
+        countryCode: _countryCode,
+      ),
+    );
   }
 
   void updateCountry(String code) {
@@ -41,7 +55,7 @@ class _HeadlinesScreenState extends State<HeadlinesScreen> {
       _countryCode = code.toLowerCase();
     });
 
-    getHeadlineNewsFirstPage();
+    getHeadlineNews(true);
   }
 
   void saveArticle(Article article) {
@@ -77,25 +91,54 @@ class _HeadlinesScreenState extends State<HeadlinesScreen> {
           // TODO: implement listener
         },
         builder: (context, state) {
-          return state is LoadingHeadlineNews
-              ? const Center(child: CircularProgressIndicator())
-              : state is HeadlineNewsError
-                  ? Center(child: Text(state.message))
-                  : state is HeadlineNewsLoaded
-                      ? SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              ArticleListVertical(
-                                articles: state.articles,
-                                onItemSelected: (article) {
-                                  onArticleSelected(article);
-                                },
-                              ),
-                            ],
-                          ),
-                        )
-                      : const SizedBox.shrink();
+          if (state is LoadingHeadlineNews && state.isFirstFetch) {
+            return _loadingIndicator();
+          }
+
+          List<Article> articles = [];
+          bool isLoading = false;
+
+          if (state is LoadingHeadlineNews) {
+            articles = state.oldArticles;
+            isLoading = true;
+          } else if (state is HeadlineNewsLoaded) {
+            articles = state.articles;
+          }
+
+          return ListView.builder(
+            key: const PageStorageKey(0),
+            controller: scrollController,
+            itemCount: articles.length + (isLoading ? 1 : 0),
+            physics: const ClampingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (context, index) {
+              if (index < articles.length) {
+                return ArticleListVerticalItem(
+                  article: articles[index],
+                  onItemSelected: () {
+                    onArticleSelected(articles[index]);
+                  },
+                );
+              } else {
+                Timer(const Duration(milliseconds: 30), () {
+                  scrollController.jumpTo(
+                    scrollController.position.maxScrollExtent,
+                  );
+                });
+                return _loadingIndicator();
+              }
+            },
+          );
         },
+      ),
+    );
+  }
+
+  Widget _loadingIndicator() {
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }

@@ -20,11 +20,13 @@ class NewsRepositoryImpl implements NewsRepository {
   @override
   FutureResultData<List<Article>> getHeadlineNews({
     required int page,
+    required int pageSize,
     required String countryCode,
   }) async {
     try {
       final articles = await remoteDataSource.getHeadlineNews(
         page: page,
+        pageSize: pageSize,
         countryCode: countryCode,
       );
       return Right(articles);

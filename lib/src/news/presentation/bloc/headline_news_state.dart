@@ -12,7 +12,10 @@ class HeadlineNewsInitial extends HeadlineNewsState {
 }
 
 class LoadingHeadlineNews extends HeadlineNewsState {
-  const LoadingHeadlineNews();
+  final List<Article> oldArticles;
+  final bool isFirstFetch;
+
+  const LoadingHeadlineNews(this.oldArticles, {this.isFirstFetch = false});
 }
 
 class HeadlineNewsLoaded extends HeadlineNewsState {

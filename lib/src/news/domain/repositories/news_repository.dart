@@ -6,6 +6,7 @@ abstract class NewsRepository {
 
   FutureResultData<List<Article>> getHeadlineNews({
     required int page,
+    required int pageSize,
     required String countryCode,
   });
 

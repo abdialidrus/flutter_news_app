@@ -13,6 +13,7 @@ class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
   @override
   Future<List<ArticleModel>> getHeadlineNews({
     required int page,
+    required int pageSize,
     required String countryCode,
   }) async {
     try {
@@ -20,7 +21,7 @@ class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
         kGetHeadlineNewsEndpoint,
         queryParameters: {
           'country': countryCode,
-          'pageSize': 10,
+          'pageSize': pageSize,
           'page': page,
         },
       );
