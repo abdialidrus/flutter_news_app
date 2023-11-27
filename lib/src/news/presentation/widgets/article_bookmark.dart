@@ -28,8 +28,7 @@ class _ArticleBookmarkState extends State<ArticleBookmark> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<CheckSavedArticleCubit>()
+    BlocProvider.of<CheckSavedArticleCubit>(context)
         .checkIsArticleSavedEvent(article: widget.article);
   }
 
