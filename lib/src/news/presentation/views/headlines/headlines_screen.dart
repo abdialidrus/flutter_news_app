@@ -118,6 +118,25 @@ class _HeadlinesScreenState extends State<HeadlinesScreen> {
             articles = state.articles;
           }
 
+          if (articles.isEmpty) {
+            return const Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image(
+                    image: AssetImage(
+                      'assets/images/empty_headlines.png',
+                    ),
+                    width: 220,
+                    fit: BoxFit.fitHeight,
+                  ),
+                  Text('No headlines available'),
+                ],
+              ),
+            );
+          }
+
           return ListView.builder(
             key: const PageStorageKey(0),
             controller: scrollController,
