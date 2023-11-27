@@ -4,7 +4,7 @@ import 'package:flutter_news_app/src/news/presentation/widgets/article_list_vert
 
 class ArticleListVertical extends StatelessWidget {
   final List<Article> articles;
-  final Function(String url) onItemSelected;
+  final Function(Article article) onItemSelected;
 
   const ArticleListVertical({
     super.key,
@@ -22,14 +22,9 @@ class ArticleListVertical extends StatelessWidget {
       itemBuilder: (context, index) {
         final article = articles[index];
         return ArticleListVerticalItem(
-          imgUrl: article.urlToImage,
-          title: article.title,
-          desc: article.description,
-          url: article.url,
-          source: article.source,
-          publishedAt: article.publishedAt,
+          article: article,
           onItemSelected: () {
-            onItemSelected(article.url);
+            onItemSelected(article);
           },
         );
       },

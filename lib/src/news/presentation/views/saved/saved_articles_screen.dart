@@ -1,55 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_news_app/src/news/domain/entities/article.dart';
-import 'package:flutter_news_app/src/news/presentation/bloc/headline_news_bloc.dart';
 import 'package:flutter_news_app/src/news/presentation/bloc/saved_articles_bloc.dart';
 import 'package:flutter_news_app/src/news/presentation/views/article_detail_screen.dart';
 import 'package:flutter_news_app/src/news/presentation/widgets/article_list_vertical.dart';
 import 'package:flutter_news_app/src/news/presentation/widgets/main_app_bar.dart';
 
-class HeadlinesScreen extends StatefulWidget {
-  const HeadlinesScreen({super.key});
+class SavedArticlesScreen extends StatefulWidget {
+  const SavedArticlesScreen({super.key});
 
   @override
-  State<HeadlinesScreen> createState() => _HeadlinesScreenState();
+  State<SavedArticlesScreen> createState() => _SavedArticlesScreenState();
 }
 
-class _HeadlinesScreenState extends State<HeadlinesScreen> {
-  String _countryCode = 'us';
+class _SavedArticlesScreenState extends State<SavedArticlesScreen> {
 
   @override
   void initState() {
     super.initState();
-    getHeadlineNewsFirstPage();
+    getSavedArticles();
   }
 
-  void getHeadlineNewsFirstPage() {
-    context.read<HeadlineNewsBloc>().add(
-          GetHeadlineNewsEvent(
-            page: 1,
-            countryCode: _countryCode,
-          ),
-        );
+  @override
+  void didUpdateWidget(covariant SavedArticlesScreen oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
   }
 
-  void updateCountry(String code) {
-    if (code == _countryCode) {
-      return;
-    }
-
-    setState(() {
-      _countryCode = code.toLowerCase();
-    });
-
-    getHeadlineNewsFirstPage();
-  }
-
-  void saveArticle(Article article) {
-    context.read<SavedArticlesBloc>().add(
-          SaveArticleEvent(
-            article: article,
-          ),
-        );
+  void getSavedArticles() {
+    context.read<SavedArticlesBloc>().add(const GetSavedArticlesEvent());
   }
 
   void onArticleSelected(Article article) {
@@ -60,28 +39,24 @@ class _HeadlinesScreenState extends State<HeadlinesScreen> {
           article: article,
         ),
       ),
-    );
+    ).then((value) => getSavedArticles());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainAppBar(
-        onCountrySelected: (String code) {
-          updateCountry(code);
-        },
-        countryCode: _countryCode,
+        onCountrySelected: (String code) {},
+        countryCode: null,
       ),
-      body: BlocConsumer<HeadlineNewsBloc, HeadlineNewsState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
+      body: BlocConsumer<SavedArticlesBloc, SavedArticlesState>(
+        listener: (context, state) {},
         builder: (context, state) {
-          return state is LoadingHeadlineNews
+          return state is LoadingSavedArticles
               ? const Center(child: CircularProgressIndicator())
-              : state is HeadlineNewsError
+              : state is SavedArticlesLoadingError
                   ? Center(child: Text(state.message))
-                  : state is HeadlineNewsLoaded
+                  : state is SavedArticlesLoaded
                       ? SingleChildScrollView(
                           child: Column(
                             children: [

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/src/news/presentation/views/headlines/headlines_screen.dart';
-import 'package:flutter_news_app/src/news/presentation/views/home_screen.dart';
+import 'package:flutter_news_app/src/news/presentation/views/saved/saved_articles_screen.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -44,6 +44,6 @@ class NavigationController extends GetxController {
 
   final screens = [
     const HeadlinesScreen(),
-    Container(color: Colors.orange),
+    const SavedArticlesScreen(),
   ];
 }

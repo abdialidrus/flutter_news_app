@@ -1,32 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:flutter_news_app/src/news/domain/entities/article.dart';
+import 'package:flutter_news_app/src/news/presentation/widgets/article_bookmark.dart';
 
-class ArticleListVerticalItem extends StatelessWidget {
-  final String imgUrl;
-  final String title;
-  final String desc;
-  final String url;
-  final String source;
-  final String publishedAt;
+class ArticleListVerticalItem extends StatefulWidget {
+  final Article article;
   final Function onItemSelected;
 
   const ArticleListVerticalItem({
     super.key,
-    required this.imgUrl,
-    required this.title,
-    required this.desc,
-    required this.url,
-    required this.source,
-    required this.publishedAt,
+    required this.article,
     required this.onItemSelected,
   });
 
   @override
+  State<ArticleListVerticalItem> createState() =>
+      _ArticleListVerticalItemState();
+}
+
+class _ArticleListVerticalItemState extends State<ArticleListVerticalItem> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        onItemSelected();
+        widget.onItemSelected();
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 35),
@@ -37,7 +34,7 @@ class ArticleListVerticalItem extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: CachedNetworkImage(
-                imageUrl: imgUrl,
+                imageUrl: widget.article.urlToImage,
                 height: 180,
                 fit: BoxFit.cover,
               ),
@@ -46,11 +43,11 @@ class ArticleListVerticalItem extends StatelessWidget {
               height: 10.0,
             ),
             Text(
-              source,
+              widget.article.source,
               style: Theme.of(context).textTheme.labelSmall,
             ),
             Text(
-              title,
+              widget.article.title,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -58,15 +55,12 @@ class ArticleListVerticalItem extends StatelessWidget {
             const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  publishedAt,
+                  widget.article.publishedAt,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
-                GestureDetector(
-                  child: const Icon(Icons.bookmark_border_rounded), // unsaved
-                  // child: const Icon(Icons.bookmark_added_rounded), // saved
-                )
               ],
             )
           ],
