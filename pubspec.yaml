@@ -43,12 +43,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/business.jpeg
-    - assets/images/entertainment.jpeg
-    - assets/images/general.jpeg
-    - assets/images/health.jpeg
-    - assets/images/science.jpeg
-    - assets/images/sport.jpeg
+    - assets/images/empty_headlines.png
 
   # fonts:
   #   - family: Schyler
