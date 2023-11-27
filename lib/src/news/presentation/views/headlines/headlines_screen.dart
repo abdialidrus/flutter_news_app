@@ -46,6 +46,14 @@ class _HeadlinesScreenState extends State<HeadlinesScreen> {
     );
   }
 
+  void updateCountryState(String newCode) {
+    BlocProvider.of<HeadlineNewsBloc>(context).add(
+      UpdateNewsSourceEvent(
+        countryCode: newCode,
+      ),
+    );
+  }
+
   void updateCountry(String code) {
     if (code == _countryCode) {
       return;
@@ -82,13 +90,18 @@ class _HeadlinesScreenState extends State<HeadlinesScreen> {
     return Scaffold(
       appBar: MainAppBar(
         onCountrySelected: (String code) {
-          updateCountry(code);
+          updateCountryState(code);
         },
         countryCode: _countryCode,
       ),
       body: BlocConsumer<HeadlineNewsBloc, HeadlineNewsState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is NewsSourceUpdated) {
+            updateCountry(state.countryCode);
+          }
+          if (state is LoadingHeadlineNews) {
+            updateCountry(state.countryCode);
+          }
         },
         builder: (context, state) {
           if (state is LoadingHeadlineNews && state.isFirstFetch) {

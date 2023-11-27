@@ -14,12 +14,18 @@ class HeadlineNewsInitial extends HeadlineNewsState {
 class LoadingHeadlineNews extends HeadlineNewsState {
   final List<Article> oldArticles;
   final bool isFirstFetch;
+  final String countryCode;
 
-  const LoadingHeadlineNews(this.oldArticles, {this.isFirstFetch = false});
+  const LoadingHeadlineNews(
+    this.oldArticles, {
+    this.isFirstFetch = false,
+    required this.countryCode,
+  });
 }
 
 class HeadlineNewsLoaded extends HeadlineNewsState {
   final List<Article> articles;
+
   const HeadlineNewsLoaded(this.articles);
 
   @override
@@ -33,4 +39,13 @@ class HeadlineNewsError extends HeadlineNewsState {
 
   @override
   List<Object> get props => [message];
+}
+
+class NewsSourceUpdated extends HeadlineNewsState {
+  final String countryCode;
+
+  const NewsSourceUpdated(this.countryCode);
+
+  @override
+  List<Object> get props => [countryCode];
 }

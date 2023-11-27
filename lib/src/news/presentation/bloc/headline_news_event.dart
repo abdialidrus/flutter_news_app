@@ -16,3 +16,9 @@ class GetHeadlineNewsEvent extends HeadlineNewsEvent {
     required this.countryCode,
   });
 }
+
+class UpdateNewsSourceEvent extends HeadlineNewsEvent {
+  final String countryCode;
+
+  const UpdateNewsSourceEvent({required this.countryCode});
+}

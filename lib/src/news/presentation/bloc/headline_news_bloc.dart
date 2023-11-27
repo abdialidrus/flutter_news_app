@@ -11,6 +11,8 @@ part 'headline_news_state.dart';
 
 class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
   final GetHeadlineNews _getHeadlineNews;
+  String newsSource = 'us';
+
   final int pageSize = 10;
   int currentPage = 1;
   Set<Article> currentArticles = {};
@@ -20,6 +22,15 @@ class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
   })  : _getHeadlineNews = getHeadlineNews,
         super(const HeadlineNewsInitial()) {
     on<GetHeadlineNewsEvent>(_getHeadlineNewsHandler);
+    on<UpdateNewsSourceEvent>(_updateNewsSourceHandler);
+  }
+
+  Future<void> _updateNewsSourceHandler(
+    UpdateNewsSourceEvent event,
+    Emitter<HeadlineNewsState> emit,
+  ) async {
+    newsSource = event.countryCode;
+    emit(NewsSourceUpdated(newsSource));
   }
 
   Future<void> _getHeadlineNewsHandler(
@@ -38,6 +49,7 @@ class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
 
     emit(LoadingHeadlineNews(
       currentArticles.toList(),
+      countryCode: newsSource,
       isFirstFetch: currentPage == 1,
     ));
 
@@ -49,7 +61,7 @@ class HeadlineNewsBloc extends Bloc<HeadlineNewsEvent, HeadlineNewsState> {
     final result = await _getHeadlineNews(GetHeadlineNewsParams(
       page: currentPage,
       pageSize: pageSize,
-      countryCode: event.countryCode,
+      countryCode: newsSource,
     ));
 
     result.fold(
